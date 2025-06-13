@@ -87,8 +87,8 @@ public class LibroDialog extends JDialog {
     }
 
     private boolean campiValidi() {
-        if (titoloField.getText().isBlank() || autoreField.getText().isBlank()
-                || genereField.getText().isBlank()
+        if (titoloField.getText().isBlank() || autoreField.getText().isBlank() ||
+                isbnField.getText().isBlank() || genereField.getText().isBlank()
                 || stelleBox.getSelectedItem() == null || statoBox.getSelectedItem() == null) {
             JOptionPane.showMessageDialog(this, "I primi 6 campi sono obbligatori", "Errore", JOptionPane.WARNING_MESSAGE);
             return false;
