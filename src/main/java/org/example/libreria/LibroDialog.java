@@ -42,7 +42,7 @@ public class LibroDialog extends JDialog {
             titoloField.setText(libro.getTitolo());
             autoreField.setText(libro.getAutore());
             genereField.setText(libro.getGenere());
-            isbnField.setText(String.valueOf(libro.getCodiceISBN()));
+            isbnField.setText(libro.getCodiceISBN());
             linguaField.setText(libro.getLingua());
             stelleBox.setSelectedItem(libro.getStelle());
             statoBox.setSelectedItem(libro.getStatoLettura());
