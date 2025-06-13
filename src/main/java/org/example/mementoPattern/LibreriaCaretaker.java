@@ -16,7 +16,7 @@ public class LibreriaCaretaker {
 
     public void salvaStato() {
         undoList.addLast(Libreria.getInstance().salva());
-        redoList.clear(); // ogni nuova azione annulla la possibilità di redo
+        redoList.clear();
     }
 
     public void undo() {

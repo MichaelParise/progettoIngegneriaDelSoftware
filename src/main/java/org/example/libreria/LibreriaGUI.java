@@ -43,320 +43,320 @@ public class LibreriaGUI extends JFrame {
     private final JButton btnRedo = new JButton("Redo");
     private int idContatore;
 
-    public LibreriaGUI() {
-        Color tableSelection = new Color(220, 237, 255); // selezione tabella azzurrina
-        idContatore = 1;
-        this.statoFiltro = new FiltroChiuso();
 
-        //inizialmente undo e redo sono disabilitati perchè non è stata fatta nessuna operazione sulla tabella
-        btnUndo.setEnabled(caretaker.canUndo());
-        btnRedo.setEnabled(caretaker.canRedo());
-        try {
-            UIManager.setLookAndFeel(new FlatLightLaf());
-        } catch (UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
-        }
+public LibreriaGUI() {
+            Color tableSelection = new Color(220, 237, 255); // selezione tabella azzurrina
+            idContatore = 1;
+            this.statoFiltro = new FiltroChiuso();
+
+            //inizialmente undo e redo sono disabilitati perchè non è stata fatta nessuna operazione sulla tabella
+            btnUndo.setEnabled(caretaker.canUndo());
+            btnRedo.setEnabled(caretaker.canRedo());
+            try {
+                UIManager.setLookAndFeel(new FlatLightLaf());
+            } catch (UnsupportedLookAndFeelException ex) {
+                ex.printStackTrace();
+            }
 
 
 
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        //creazione tabella
-        tableModel = new DefaultTableModel(new Object[]{"ID", "Titolo", "Autore", "Genere", "codice ISBN", "Valutazione", "Stato Lettura", "Lingua"}, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false; // Nessuna cella modificabile direttamente
+            //creazione tabella
+            tableModel = new DefaultTableModel(new Object[]{"ID", "Titolo", "Autore", "Genere", "codice ISBN", "Valutazione", "Stato Lettura", "Lingua"}, 0) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false; // Nessuna cella modificabile direttamente
+                }
+            };
+
+
+            table = new JTable(tableModel);
+            table.getTableHeader().setReorderingAllowed(false);
+            table.setShowGrid(false);
+            table.setIntercellSpacing(new Dimension(0, 0));
+            table.setFillsViewportHeight(true);
+            table.setShowHorizontalLines(true);
+            table.setShowVerticalLines(true);
+            table.setRowHeight(28);
+            table.setSelectionBackground(tableSelection);
+            table.setSelectionForeground(Color.BLACK);
+
+
+
+
+            JTableHeader header = table.getTableHeader();
+            header.setFont(new Font("Segoe UI", Font.BOLD, 15));
+            header.setBackground(new Color(30, 60, 90));
+            header.setForeground(Color.WHITE);
+
+            DefaultTableCellRenderer modernRenderer = new DefaultTableCellRenderer() {
+                @Override
+                public Component getTableCellRendererComponent(JTable table, Object value,
+                                                               boolean isSelected, boolean hasFocus,
+                                                               int row, int column) {
+                    JLabel label = (JLabel) super.getTableCellRendererComponent(
+                            table, value, isSelected, hasFocus, row, column);
+
+                    label.setBorder(null);
+                    label.setOpaque(true);
+                    label.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+                    label.setHorizontalAlignment(SwingConstants.CENTER);
+                    label.setForeground(isSelected ? Color.BLACK : new Color(50, 50, 50));
+                    label.setBackground(isSelected ? new Color(210, 230, 255) : Color.WHITE);
+                    return label;
+                }
+            };
+            for (int i = 0; i < table.getColumnCount(); i++) {
+                table.getColumnModel().getColumn(i).setCellRenderer(modernRenderer);
             }
-        };
+            //titolo dell'app
+            setTitle("Libreria personale");
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            setSize(900, 500);
+            setLocationRelativeTo(null);
+            setLayout(new BorderLayout());
+            setVisible(true);
+            aggiornaTabella(Libreria.getInstance().getListaLibri());
 
-
-        table = new JTable(tableModel);
-        table.getTableHeader().setReorderingAllowed(false);
-        table.setShowGrid(false);
-        table.setIntercellSpacing(new Dimension(0, 0));
-        table.setFillsViewportHeight(true);
-        table.setShowHorizontalLines(true);
-        table.setShowVerticalLines(true);
-        table.setRowHeight(28);
-        table.setSelectionBackground(tableSelection);
-        table.setSelectionForeground(Color.BLACK);
-
-
-
-
-        JTableHeader header = table.getTableHeader();
-        header.setFont(new Font("Segoe UI", Font.BOLD, 15));
-        header.setBackground(new Color(30, 60, 90));
-        header.setForeground(Color.WHITE);
-
-        DefaultTableCellRenderer modernRenderer = new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value,
-                                                           boolean isSelected, boolean hasFocus,
-                                                           int row, int column) {
-                JLabel label = (JLabel) super.getTableCellRendererComponent(
-                        table, value, isSelected, hasFocus, row, column);
-
-                label.setBorder(null);
-                label.setOpaque(true);
-                label.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-                label.setHorizontalAlignment(SwingConstants.CENTER);
-                label.setForeground(isSelected ? Color.BLACK : new Color(50, 50, 50));
-                label.setBackground(isSelected ? new Color(210, 230, 255) : Color.WHITE);
-                return label;
-            }
-        };
-        for (int i = 0; i < table.getColumnCount(); i++) {
-            table.getColumnModel().getColumn(i).setCellRenderer(modernRenderer);
-        }
-        //titolo dell'app
-        setTitle("Libreria personale");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(900, 500);
-        setLocationRelativeTo(null);
-        setLayout(new BorderLayout());
-        setVisible(true);
-        aggiornaTabella(Libreria.getInstance().getListaLibri());
-
-        //se la tabella è molto grande si aggiunge automaticamente la barra di scorrimento
-        JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        scrollPane.getViewport().setBackground(Color.WHITE);
-        add(scrollPane,BorderLayout.CENTER);
+            //se la tabella è molto grande si aggiunge automaticamente la barra di scorrimento
+            JScrollPane scrollPane = new JScrollPane(table);
+            scrollPane.setBorder(BorderFactory.createEmptyBorder());
+            scrollPane.getViewport().setBackground(Color.WHITE);
+            add(scrollPane,BorderLayout.CENTER);
 
 
 
-        //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-        //BOTTONE AGGIUNGI
-        JButton btnAggiungi = new JButton("Aggiungi");
-        btnAggiungi.setPreferredSize(new Dimension(100, 30));
-        btnAggiungi.setFont(new Font("Segoe UI", Font.BOLD, 18));
+            //BOTTONE AGGIUNGI
+            JButton btnAggiungi = new JButton("Aggiungi");
+            btnAggiungi.setPreferredSize(new Dimension(100, 30));
+            btnAggiungi.setFont(new Font("Segoe UI", Font.BOLD, 18));
 
-        //AGGIUNGI
-        btnAggiungi.addActionListener(e -> {
-            try {
-                Libro libro = new LibroDialog(this, null).mostraFinestra();
+            //AGGIUNGI
+            btnAggiungi.addActionListener(e -> {
+                try {
+                    Libro libro = new LibroDialog(this, null).mostraFinestra();
 
 
-                if (libro != null) {
+                    if (libro != null) {
+                        caretaker.salvaStato();
+                        idContatore++;
+                        Libreria.getInstance().aggiungiLibro(libro);
+                        JOptionPane.showMessageDialog(this, "Libro aggiunto: " + libro.getTitolo());
+                        aggiornaTabella(Libreria.getInstance().getListaLibri());
+                        btnUndo.setEnabled(caretaker.canUndo());
+                        btnRedo.setEnabled(caretaker.canRedo());
+
+
+                    }
+
+                }
+                catch (IllegalArgumentException ex) {
+
+                }
+            });
+
+            //BOTTONE MODIFICA
+            JButton btnModifica = new JButton("Modifica");
+            btnModifica.setPreferredSize(new Dimension(100, 30));
+            btnModifica.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+            //MODIFICA
+            btnModifica.addActionListener(e -> {
+                int rigaSelezionata = table.getSelectedRow();
+                int[] righeSelezionate = table.getSelectedRows();
+
+                if (rigaSelezionata == -1) {
+                    JOptionPane.showMessageDialog(this, "Seleziona un libro da modificare");
+                    return;
+                }
+
+                if(righeSelezionate.length > 1){
+                    JOptionPane.showMessageDialog(this, "Puoi modificare un solo libro per volta");
+                    return;
+                }
+
+                Libro esistente = Libreria.getInstance().getListaLibri().get(rigaSelezionata);
+                Libro modificato = new LibroDialog(this, esistente).mostraFinestra();
+
+                if (modificato != null) {
                     caretaker.salvaStato();
-                    idContatore++;
-                    Libreria.getInstance().aggiungiLibro(libro);
-                    JOptionPane.showMessageDialog(this, "Libro aggiunto: " + libro.getTitolo());
+                    Libreria.getInstance().modificaLibro(esistente, modificato);
                     aggiornaTabella(Libreria.getInstance().getListaLibri());
                     btnUndo.setEnabled(caretaker.canUndo());
                     btnRedo.setEnabled(caretaker.canRedo());
+                }
+            });
 
 
+
+            //BOTTONE RIMUOVI
+            JButton btnRimuovi = new JButton("Rimuovi");
+            btnRimuovi.setPreferredSize(new Dimension(100, 30));
+            btnRimuovi.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+
+            btnRimuovi.addActionListener(e -> {
+                int[] righeSelezionate = table.getSelectedRows();
+                if (righeSelezionate.length == 0) {
+                    JOptionPane.showMessageDialog(this, "Seleziona uno o più libri da rimuovere.");
+                    return;
                 }
 
-            }
-            catch (IllegalArgumentException ex) {
-
-            }
-        });
-
-        //BOTTONE MODIFICA
-        JButton btnModifica = new JButton("Modifica");
-        btnModifica.setPreferredSize(new Dimension(100, 30));
-        btnModifica.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        //MODIFICA
-        btnModifica.addActionListener(e -> {
-            int rigaSelezionata = table.getSelectedRow();
-            int[] righeSelezionate = table.getSelectedRows();
-
-            if (rigaSelezionata == -1) {
-                JOptionPane.showMessageDialog(this, "Seleziona un libro da modificare");
-                return;
-            }
-
-            if(righeSelezionate.length > 1){
-                JOptionPane.showMessageDialog(this, "Puoi modificare un solo libro per volta");
-                return;
-            }
-
-            Libro esistente = Libreria.getInstance().getListaLibri().get(rigaSelezionata);
-            Libro modificato = new LibroDialog(this, esistente).mostraFinestra();
-
-            if (modificato != null) {
                 caretaker.salvaStato();
-                Libreria.getInstance().modificaLibro(esistente, modificato);
+                List<Libro> daRimuovere = new ArrayList<>();
+                for (int riga : righeSelezionate) {
+                    daRimuovere.add(Libreria.getInstance().getListaLibri().get(riga));
+                }
+
+                StringBuilder sb = Libreria.getInstance().rimuoviLibro(daRimuovere);
+                JOptionPane.showMessageDialog(this, sb.toString(), "Rimozione completata", JOptionPane.INFORMATION_MESSAGE);
                 aggiornaTabella(Libreria.getInstance().getListaLibri());
                 btnUndo.setEnabled(caretaker.canUndo());
                 btnRedo.setEnabled(caretaker.canRedo());
-            }
-        });
 
+            });
 
+            JButton btnMostraTabella = new JButton("Carica Libri");
 
-        //BOTTONE RIMUOVI
-        JButton btnRimuovi = new JButton("Rimuovi");
-        btnRimuovi.setPreferredSize(new Dimension(100, 30));
-        btnRimuovi.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+            btnMostraTabella.addActionListener(e -> aggiornaTabella(PersistenzaJson.carica()));
 
-        btnRimuovi.addActionListener(e -> {
-            int[] righeSelezionate = table.getSelectedRows();
-            if (righeSelezionate.length == 0) {
-                JOptionPane.showMessageDialog(this, "Seleziona uno o più libri da rimuovere.");
-                return;
-            }
-
-            caretaker.salvaStato();
-            List<Libro> daRimuovere = new ArrayList<>();
-            for (int riga : righeSelezionate) {
-                daRimuovere.add(Libreria.getInstance().getListaLibri().get(riga));
-            }
-
-            StringBuilder sb = Libreria.getInstance().rimuoviLibro(daRimuovere);
-            JOptionPane.showMessageDialog(this, sb.toString(), "Rimozione completata", JOptionPane.INFORMATION_MESSAGE);
-            aggiornaTabella(Libreria.getInstance().getListaLibri());
-            btnUndo.setEnabled(caretaker.canUndo());
-            btnRedo.setEnabled(caretaker.canRedo());
-
-        });
-
-        JButton btnMostraTabella = new JButton("Carica Libri");
-
-        btnMostraTabella.addActionListener(e -> aggiornaTabella(PersistenzaJson.carica()));
-
-        //pannello dei bottoni in basso
-        JPanel pannelloInferiore = new JPanel(new MigLayout("insets 10, gap 20",
-                "[grow, fill] [grow, fill] [grow, fill]",  // 3 colonne che crescono e i bottoni si espandono
-                "[]"));
-        pannelloInferiore.setBackground(Color.WHITE);
-        pannelloInferiore.add(btnAggiungi);
-        pannelloInferiore.add(btnModifica);
-        pannelloInferiore.add(btnRimuovi);
-        add(pannelloInferiore,BorderLayout.SOUTH);
+            //pannello dei bottoni in basso
+            JPanel pannelloInferiore = new JPanel(new MigLayout("insets 10, gap 20",
+                    "[grow, fill] [grow, fill] [grow, fill]",  // 3 colonne che crescono e i bottoni si espandono
+                    "[]"));
+            pannelloInferiore.setBackground(Color.WHITE);
+            pannelloInferiore.add(btnAggiungi);
+            pannelloInferiore.add(btnModifica);
+            pannelloInferiore.add(btnRimuovi);
+            add(pannelloInferiore,BorderLayout.SOUTH);
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------
-        // BOTTONE ORDINA:Mostra il menu quando il bottone è cliccato
-        JButton btnOrdina = new JButton("Ordina");
-        JPopupMenu menuOrdina = new JPopupMenu();
-        JMenuItem ordinaTitolo = new JMenuItem("Per Titolo");
-        JMenuItem ordinaGenere = new JMenuItem("Per Genere");
-        JMenuItem ordinaAutore = new JMenuItem("Per Autore");
-        JMenuItem ordinaStelleCrescente = new JMenuItem("Per Valutazione(crescente)");
-        JMenuItem ordinaStelleDecrescente = new JMenuItem("Per Valutazione(decrescente)");
-        JMenuItem ordinaStato = new JMenuItem("Per Stato Lettura");
-        JMenuItem ordinaLingua = new JMenuItem("Per Lingua");
+            // BOTTONE ORDINA:Mostra il menu quando il bottone è cliccato
+            JButton btnOrdina = new JButton("Ordina");
+            JPopupMenu menuOrdina = new JPopupMenu();
+            JMenuItem ordinaTitolo = new JMenuItem("Per Titolo");
+            JMenuItem ordinaGenere = new JMenuItem("Per Genere");
+            JMenuItem ordinaAutore = new JMenuItem("Per Autore");
+            JMenuItem ordinaStelleCrescente = new JMenuItem("Per Valutazione(crescente)");
+            JMenuItem ordinaStelleDecrescente = new JMenuItem("Per Valutazione(decrescente)");
+            JMenuItem ordinaStato = new JMenuItem("Per Stato Lettura");
+            JMenuItem ordinaLingua = new JMenuItem("Per Lingua");
 
-        menuOrdina.add(ordinaTitolo);
-        menuOrdina.add(ordinaGenere);
-        menuOrdina.add(ordinaAutore);
-        menuOrdina.add(ordinaStelleCrescente);
-        menuOrdina.add(ordinaStelleDecrescente);
-        menuOrdina.add(ordinaStato);
-        menuOrdina.add(ordinaLingua);
+            menuOrdina.add(ordinaTitolo);
+            menuOrdina.add(ordinaGenere);
+            menuOrdina.add(ordinaAutore);
+            menuOrdina.add(ordinaStelleCrescente);
+            menuOrdina.add(ordinaStelleDecrescente);
+            menuOrdina.add(ordinaStato);
+            menuOrdina.add(ordinaLingua);
 
-        btnOrdina.addActionListener(e -> menuOrdina.show(btnOrdina, 0, btnOrdina.getHeight()));
-        ordinaTitolo.addActionListener(e -> {
-            caretaker.salvaStato();
-            Libreria.getInstance().eseguiStrategy(new OrdinaPerTitolo());
-            aggiornaTabella(Libreria.getInstance().getListaLibri());
-            btnUndo.setEnabled(caretaker.canUndo());
-            btnRedo.setEnabled(caretaker.canRedo());
+            btnOrdina.addActionListener(e -> menuOrdina.show(btnOrdina, 0, btnOrdina.getHeight()));
+            ordinaTitolo.addActionListener(e -> {
+                caretaker.salvaStato();
+                Libreria.getInstance().eseguiStrategy(new OrdinaPerTitolo());
+                aggiornaTabella(Libreria.getInstance().getListaLibri());
+                btnUndo.setEnabled(caretaker.canUndo());
+                btnRedo.setEnabled(caretaker.canRedo());
 
-        });
-        ordinaGenere.addActionListener(e -> {
-            caretaker.salvaStato();
-            Libreria.getInstance().eseguiStrategy(new OrdinaPerGenere());
-            aggiornaTabella(Libreria.getInstance().getListaLibri());
-            btnUndo.setEnabled(caretaker.canUndo());
-            btnRedo.setEnabled(caretaker.canRedo());
-        });
-        ordinaAutore.addActionListener(e -> {
-            caretaker.salvaStato();
-            Libreria.getInstance().eseguiStrategy(new OrdinaPerAutore());
-            aggiornaTabella(Libreria.getInstance().getListaLibri());
-            btnUndo.setEnabled(caretaker.canUndo());
-            btnRedo.setEnabled(caretaker.canRedo());
-        });
-        ordinaStelleDecrescente.addActionListener(e -> {
-            caretaker.salvaStato();
-            Libreria.getInstance().eseguiStrategy(new OrdinaPerStelleDecrescente());
-            aggiornaTabella(Libreria.getInstance().getListaLibri());
-            btnUndo.setEnabled(caretaker.canUndo());
-            btnRedo.setEnabled(caretaker.canRedo());
-        });
+            });
+            ordinaGenere.addActionListener(e -> {
+                caretaker.salvaStato();
+                Libreria.getInstance().eseguiStrategy(new OrdinaPerGenere());
+                aggiornaTabella(Libreria.getInstance().getListaLibri());
+                btnUndo.setEnabled(caretaker.canUndo());
+                btnRedo.setEnabled(caretaker.canRedo());
+            });
+            ordinaAutore.addActionListener(e -> {
+                caretaker.salvaStato();
+                Libreria.getInstance().eseguiStrategy(new OrdinaPerAutore());
+                aggiornaTabella(Libreria.getInstance().getListaLibri());
+                btnUndo.setEnabled(caretaker.canUndo());
+                btnRedo.setEnabled(caretaker.canRedo());
+            });
+            ordinaStelleDecrescente.addActionListener(e -> {
+                caretaker.salvaStato();
+                Libreria.getInstance().eseguiStrategy(new OrdinaPerStelleDecrescente());
+                aggiornaTabella(Libreria.getInstance().getListaLibri());
+                btnUndo.setEnabled(caretaker.canUndo());
+                btnRedo.setEnabled(caretaker.canRedo());
+            });
 
-        ordinaStelleCrescente.addActionListener(e -> {
-            caretaker.salvaStato();
-            Libreria.getInstance().eseguiStrategy(new OrdinaPerStelleCrescente());
-            aggiornaTabella(Libreria.getInstance().getListaLibri());
-            btnUndo.setEnabled(caretaker.canUndo());
-            btnRedo.setEnabled(caretaker.canRedo());
-        });
-        ordinaStato.addActionListener(e -> {
-            caretaker.salvaStato();
-            Libreria.getInstance().eseguiStrategy(new OrdinaPerStatoLettura());
-            aggiornaTabella(Libreria.getInstance().getListaLibri());
-            btnUndo.setEnabled(caretaker.canUndo());
-            btnRedo.setEnabled(caretaker.canRedo());
-        });
+            ordinaStelleCrescente.addActionListener(e -> {
+                caretaker.salvaStato();
+                Libreria.getInstance().eseguiStrategy(new OrdinaPerStelleCrescente());
+                aggiornaTabella(Libreria.getInstance().getListaLibri());
+                btnUndo.setEnabled(caretaker.canUndo());
+                btnRedo.setEnabled(caretaker.canRedo());
+            });
+            ordinaStato.addActionListener(e -> {
+                caretaker.salvaStato();
+                Libreria.getInstance().eseguiStrategy(new OrdinaPerStatoLettura());
+                aggiornaTabella(Libreria.getInstance().getListaLibri());
+                btnUndo.setEnabled(caretaker.canUndo());
+                btnRedo.setEnabled(caretaker.canRedo());
+            });
 
-        ordinaLingua.addActionListener(e -> {
-            caretaker.salvaStato();
-            Libreria.getInstance().eseguiStrategy(new OrdinaPerLingua());
-            aggiornaTabella(Libreria.getInstance().getListaLibri());
-            btnUndo.setEnabled(caretaker.canUndo());
-            btnRedo.setEnabled(caretaker.canRedo());
-        });
+            ordinaLingua.addActionListener(e -> {
+                caretaker.salvaStato();
+                Libreria.getInstance().eseguiStrategy(new OrdinaPerLingua());
+                aggiornaTabella(Libreria.getInstance().getListaLibri());
+                btnUndo.setEnabled(caretaker.canUndo());
+                btnRedo.setEnabled(caretaker.canRedo());
+            });
 
-        //BOTTONE FILTRA
-        JButton btnFiltra  = new JButton("Filtra");
+            //BOTTONE FILTRA
+            JButton btnFiltra  = new JButton("Filtra");
 
-        btnFiltra.addActionListener(e -> premiBottone());
+            btnFiltra.addActionListener(e -> premiBottone());
 
-        //BOTTONE CERCA
-        campoCerca = new JTextField(15);
-        JButton btnCerca = new JButton("Cerca");
+            //BOTTONE CERCA
+            campoCerca = new JTextField(15);
+            JButton btnCerca = new JButton("Cerca");
 
-        btnCerca.addActionListener(e -> {
-            String valore = campoCerca.getText();
-            if (valore.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Inserisci qualcosa nella barra di ricerca.");
-                return;
-            }
-            List<Libro> risultati = Libreria.getInstance().cerca(campoCerca.getText().toLowerCase());
-            aggiornaTabella(risultati);
-        });
-
-
-
-        //GESTIONE DEL CAMPO DI RICERCA: fa in modo che quando il campo di ricerca è vuoto la tabella torna allo stato di partenza
-        campoCerca.getDocument().addDocumentListener(
-                new DocumentListener() {
-                private void aggiorna() {
-                    String valore = campoCerca.getText().trim();
-                    if (valore.isEmpty()) {
-                        btnCerca.setEnabled(false);
-                        aggiornaTabella(Libreria.getInstance().getListaLibri());
-                    }
-
-                    else{
-                        btnCerca.setEnabled(true);
-                    }
+            btnCerca.addActionListener(e -> {
+                String valore = campoCerca.getText();
+                if (valore.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Inserisci qualcosa nella barra di ricerca.");
+                    return;
                 }
+                List<Libro> risultati = Libreria.getInstance().cerca(campoCerca.getText().toLowerCase());
+                aggiornaTabella(risultati);
+            });
 
-                @Override
-                public void insertUpdate(DocumentEvent e) {
-                    aggiorna();
-                }
 
-                @Override
-                public void removeUpdate(DocumentEvent e) {
-                    aggiorna();
-                }
 
-                @Override
-                public void changedUpdate(DocumentEvent e) {
-                    aggiorna();
-                }
-        });
+            //GESTIONE DEL CAMPO DI RICERCA: fa in modo che quando il campo di ricerca è vuoto la tabella torna allo stato di partenza
+            campoCerca.getDocument().addDocumentListener(
+                    new DocumentListener() {
+                        private void aggiorna() {
+                            String valore = campoCerca.getText().trim();
+                            if (valore.isEmpty()) {
+                                btnCerca.setEnabled(false);
+                                aggiornaTabella(Libreria.getInstance().getListaLibri());
+                            }
 
+                            else{
+                                btnCerca.setEnabled(true);
+                            }
+                        }
+
+                        @Override
+                        public void insertUpdate(DocumentEvent e) {
+                            aggiorna();
+                        }
+
+                        @Override
+                        public void removeUpdate(DocumentEvent e) {
+                            aggiorna();
+                        }
+
+                        @Override
+                        public void changedUpdate(DocumentEvent e) {
+                            aggiorna();
+                        }
+                    });
         //UNDO
         btnUndo.addActionListener(e -> {
             if(!caretaker.canUndo())
