@@ -12,7 +12,7 @@ public class FiltraPerISBN extends FiltroHandler{
         List<Libro> filtrati = new ArrayList<>();
 
         for(Libro l: listaLibri){
-            if(String.valueOf(l.getCodiceISBN()).toLowerCase().contains(isbn.toLowerCase()) ){
+            if(l.getCodiceISBN().toLowerCase().contains(isbn.toLowerCase()) ){
                 filtrati.add(l);
             }
         }

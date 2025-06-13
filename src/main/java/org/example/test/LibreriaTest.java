@@ -38,7 +38,7 @@ public class LibreriaTest {
 
     @Test
     void testAggiuntaLibroUnico() {
-        Libro libro = creaLibro(1234);
+        Libro libro = creaLibro("1234");
         Libreria.getInstance().aggiungiLibro(libro);
         assertEquals(1, Libreria.getInstance().getListaLibri().size());
         assertTrue(Libreria.getInstance().getListaLibri().contains(libro));
@@ -47,8 +47,8 @@ public class LibreriaTest {
     @Test
 
     void testAggiuntaDuplicatoISBN() {
-        Libro libro1 = creaLibro(1234);
-        Libro libro2 = creaLibro(1234); // stesso ISBN
+        Libro libro1 = creaLibro("1234");
+        Libro libro2 = creaLibro("1234"); // stesso ISBN
         Libreria.getInstance().aggiungiLibro(libro1);
         Libreria.getInstance().aggiungiLibro(libro2);
         assertEquals(1, Libreria.getInstance().getListaLibri().size());
@@ -56,7 +56,7 @@ public class LibreriaTest {
 
     @Test
     void testRimozioneLibro() {
-        Libro libro = creaLibro(5678);
+        Libro libro = creaLibro("5678");
         Libreria.getInstance().aggiungiLibro(libro);
         List<Libro> daRimuovere = List.of(libro);
 
@@ -68,10 +68,10 @@ public class LibreriaTest {
     @Test
 
     void testModificaLibro() {
-        Libro libro = creaLibro(5678);
+        Libro libro = creaLibro("5678");
         Libreria.getInstance().aggiungiLibro(libro);
 
-        Libro modificato = new Libro.Builder("Titolo Modificato", "Autore", Integer.parseInt("5678"), "Genere", Valutazione.QUATTRO, StatoLettura.IN_LETTURA).lingua("Italiano").build();
+        Libro modificato = new Libro.Builder("Titolo Modificato", "Autore","5678", "Genere", Valutazione.QUATTRO, StatoLettura.IN_LETTURA).lingua("Italiano").build();
         Libreria.getInstance().modificaLibro(libro, modificato);
 
         assertEquals("Titolo Modificato", Libreria.getInstance().getListaLibri().get(0).getTitolo());
@@ -79,7 +79,7 @@ public class LibreriaTest {
 
     @Test
     void testCercaLibro() {
-        Libro libro = creaLibro(4321);
+        Libro libro = creaLibro("4321");
         Libreria.getInstance().aggiungiLibro(libro);
 
         List<Libro> risultati = Libreria.getInstance().cerca("titolo");
@@ -88,7 +88,7 @@ public class LibreriaTest {
 
 
    //un metodo di supporto utilizzato solo per il testing, infatti è privato
-    private Libro creaLibro(int isbn) {
+    private Libro creaLibro(String isbn) {
         return new Libro.Builder(
                 "Titolo",
                 "Autore",

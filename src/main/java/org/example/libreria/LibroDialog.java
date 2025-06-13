@@ -99,8 +99,7 @@ public class LibroDialog extends JDialog {
             return false;
         }
 
-        int isbn = Integer.parseInt(isbnField.getText().trim());
-        if (Libreria.getInstance().esisteGiaISBN(isbn, libroOriginale)) {
+        if (Libreria.getInstance().esisteGiaISBN(isbnField.getText().trim(), libroOriginale)) {
             JOptionPane.showMessageDialog(this, "ISBN già esistente.", "Errore", JOptionPane.WARNING_MESSAGE);
             return false;
         }
@@ -118,7 +117,7 @@ public class LibroDialog extends JDialog {
         Libro.Builder builder=new Libro.Builder(
                 titoloField.getText().trim().toLowerCase(),
                 autoreField.getText().trim().toLowerCase(),
-                Integer.parseInt(isbnField.getText().trim()),
+                isbnField.getText().trim(),
                 genereField.getText().trim().toLowerCase(),
                 (Valutazione) stelleBox.getSelectedItem(),
                 (StatoLettura) statoBox.getSelectedItem());

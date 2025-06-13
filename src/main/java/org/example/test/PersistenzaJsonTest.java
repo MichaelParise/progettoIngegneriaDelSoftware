@@ -28,8 +28,8 @@ public class PersistenzaJsonTest {
     @Test
     void testSalvataggioECaricamento() {
         List<Libro> libriOriginali = List.of(
-                new Libro.Builder("Titolo 1", "Autore 1", 1111, "Romanzo", Valutazione.CINQUE, StatoLettura.LETTO).lingua("IT").build(),
-                new Libro.Builder("Titolo 2", "Autore 2", 2222, "Giallo", Valutazione.QUATTRO, StatoLettura.IN_LETTURA).lingua("EN").build()
+                new Libro.Builder("Titolo 1", "Autore 1", "1111", "Romanzo", Valutazione.CINQUE, StatoLettura.LETTO).lingua("IT").build(),
+                new Libro.Builder("Titolo 2", "Autore 2", "2222", "Giallo", Valutazione.QUATTRO, StatoLettura.IN_LETTURA).lingua("EN").build()
         );
 
         PersistenzaJson.salvaNelPercorsoPersonalizzato(libriOriginali, TEMP_FILE.toString());

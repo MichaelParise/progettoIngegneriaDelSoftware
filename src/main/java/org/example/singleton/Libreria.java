@@ -31,7 +31,7 @@ public final class Libreria {
 
     public void aggiungiLibro(Libro libro) {
         for (Libro l : listaLibri) {
-            if (l.equals(libro) || l.getCodiceISBN() == libro.getCodiceISBN()) {
+            if (l.equals(libro)) {
                 return;
             }
         }
@@ -44,12 +44,13 @@ public final class Libreria {
         List<Libro> filtrati = new ArrayList<>();
 
         for (Libro libro : Libreria.getInstance().getListaLibri()) {
-            if (libro.getTitolo().toLowerCase().contains(parametro) ||
-                    libro.getAutore().toLowerCase().contains(parametro) ||
-                    libro.getGenere().toLowerCase().contains(parametro) ||
-                    String.valueOf(libro.getCodiceISBN()).toLowerCase().contains(parametro) ||
-                    libro.getStatoLettura().toString().toLowerCase().contains(parametro) ||
-                    String.valueOf(libro.getStelle()).equals(parametro)) {
+            String param = parametro.toLowerCase();
+            if (libro.getTitolo().toLowerCase().contains(param) ||
+                    libro.getAutore().toLowerCase().contains(param) ||
+                    libro.getGenere().toLowerCase().contains(param) ||
+                    libro.getCodiceISBN().toLowerCase().contains(param) ||
+                    libro.getStatoLettura().toString().toLowerCase().contains(param) ||
+                    String.valueOf(libro.getStelle()).equals(param)) {
                 filtrati.add(libro);
             }
         }
@@ -84,9 +85,9 @@ public final class Libreria {
         }
     }
 
-    public boolean esisteGiaISBN(int isbn, Libro escluso) {
+    public boolean esisteGiaISBN(String isbn, Libro escluso) {
         for (Libro l : listaLibri) {
-            if (l.getCodiceISBN() == isbn && (!l.equals(escluso))) {
+            if (l.getCodiceISBN().equals(isbn) && (!l.equals(escluso))) {
                 return true;
             }
         }

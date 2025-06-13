@@ -9,11 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class LibroTest {
 
-    @Test
-    void lanciaEccezioneSeISBNNonNumerico() {
-        String inputIsbn = "abc1";
-        assertThrows(NumberFormatException.class, () -> Integer.parseInt(inputIsbn));
-    }
+
 
 
     @Test
@@ -22,7 +18,7 @@ public class LibroTest {
         assertThrows(IllegalArgumentException.class, () -> new Libro.Builder(
                 "Titolo",
                 "Autore",
-                12345,  // troppo lungo
+                "12345",  // troppo lungo
                 "Genere",
                 Valutazione.CINQUE,
                 StatoLettura.LETTO
@@ -37,7 +33,7 @@ public class LibroTest {
         assertThrows(NullPointerException.class, () -> new Libro.Builder(
                 null,
                 "Autore",
-                1234,
+                "1234",
                 "Genere",
                 Valutazione.CINQUE,
                 StatoLettura.LETTO
@@ -49,7 +45,7 @@ public class LibroTest {
         assertThrows(NullPointerException.class, () -> new Libro.Builder(
                 "Titolo",
                 null,
-                1234,
+                "1234",
                 "Genere",
                 Valutazione.CINQUE,
                 StatoLettura.LETTO
@@ -63,7 +59,7 @@ public class LibroTest {
         assertThrows(NullPointerException.class, () -> new Libro.Builder(
                 "Titolo",
                 "Autore",
-                1234,
+                "1234",
                 null,
                 Valutazione.CINQUE,
                 StatoLettura.LETTO
@@ -75,7 +71,7 @@ public class LibroTest {
         assertThrows(NullPointerException.class, () -> new Libro.Builder(
                 "Titolo",
                 "Autore",
-                1234,
+                "1234",
                 "Genere",
                 null,
                 StatoLettura.LETTO
@@ -87,7 +83,7 @@ public class LibroTest {
         assertThrows(NullPointerException.class, () -> new Libro.Builder(
                 "Titolo",
                 "Autore",
-                1234,
+                "1234",
                 "Genere",
                 Valutazione.CINQUE,
                 null
@@ -95,12 +91,25 @@ public class LibroTest {
     }
 
     @Test
+    void lanciaEccezioneSeISBNENullo() {
+        assertThrows(NullPointerException.class, () -> new Libro.Builder(
+                "Titolo",
+                "Autore",
+                null,
+                "Genere",
+                Valutazione.CINQUE,
+                StatoLettura.LETTO
+        ).build());
+    }
+
+
+    @Test
     void nonLanciaEccezioneSeLinguaENulla() {
         assertDoesNotThrow(() -> {
             new Libro.Builder(
                     "Titolo",
                     "Autore",
-                    1234,
+                    "1234",
                     "Genere",
                     Valutazione.CINQUE,
                     StatoLettura.LETTO

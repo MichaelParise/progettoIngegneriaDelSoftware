@@ -139,11 +139,15 @@ public class LibreriaGUI extends JFrame {
             try {
                 Libro libro = new LibroDialog(this, null).mostraFinestra();
 
+
                 if (libro != null) {
+                    caretaker.salvaStato();
                     idContatore++;
                     Libreria.getInstance().aggiungiLibro(libro);
                     JOptionPane.showMessageDialog(this, "Libro aggiunto: " + libro.getTitolo());
-
+                    aggiornaTabella(Libreria.getInstance().getListaLibri());
+                    btnUndo.setEnabled(caretaker.canUndo());
+                    btnRedo.setEnabled(caretaker.canRedo());
 
 
                 }
@@ -710,17 +714,35 @@ public class LibreriaGUI extends JFrame {
 
 
     private Handler getFiltroHandler(String nomeFiltro, String parametroRicerca) {
-        Handler filtro= null;
-        for(FiltroHandler fh : nomiFiltri) {
+        Handler filtro = null;
+
+        for (FiltroHandler fh : nomiFiltri) {
             if (fh.toString().equals(nomeFiltro)) {
-                filtro = fh;
+                if (fh instanceof FiltraPerTitolo)
+                    filtro = new FiltraPerTitolo();
+                else if (fh instanceof FiltraPerAutore)
+                    filtro = new FiltraPerAutore();
+                else if (fh instanceof FiltraPerGenere)
+                    filtro = new FiltraPerGenere();
+                else if (fh instanceof FiltraPerISBN)
+                    filtro = new FiltraPerISBN();
+                else if (fh instanceof FiltraPerStelle)
+                    filtro = new FiltraPerStelle();
+                else if (fh instanceof FiltraPerStato)
+                    filtro = new FiltraPerStato();
+                else if (fh instanceof FiltraPerLingua)
+                    filtro = new FiltraPerLingua();
+                break;
             }
         }
+
         if (filtro != null) {
             filtro.setParametro(parametroRicerca);
         }
+
         return filtro;
     }
+
 
 
 
