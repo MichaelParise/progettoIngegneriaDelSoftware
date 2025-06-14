@@ -254,56 +254,39 @@ public LibreriaGUI() {
 
             btnOrdina.addActionListener(e -> menuOrdina.show(btnOrdina, 0, btnOrdina.getHeight()));
             ordinaTitolo.addActionListener(e -> {
-                caretaker.salvaStato();
                 Libreria.getInstance().eseguiStrategy(new OrdinaPerTitolo());
                 aggiornaTabella(Libreria.getInstance().getListaLibri());
-                btnUndo.setEnabled(caretaker.canUndo());
-                btnRedo.setEnabled(caretaker.canRedo());
+
 
             });
             ordinaGenere.addActionListener(e -> {
-                caretaker.salvaStato();
                 Libreria.getInstance().eseguiStrategy(new OrdinaPerGenere());
                 aggiornaTabella(Libreria.getInstance().getListaLibri());
-                btnUndo.setEnabled(caretaker.canUndo());
-                btnRedo.setEnabled(caretaker.canRedo());
+
             });
             ordinaAutore.addActionListener(e -> {
-                caretaker.salvaStato();
                 Libreria.getInstance().eseguiStrategy(new OrdinaPerAutore());
                 aggiornaTabella(Libreria.getInstance().getListaLibri());
-                btnUndo.setEnabled(caretaker.canUndo());
-                btnRedo.setEnabled(caretaker.canRedo());
             });
             ordinaStelleDecrescente.addActionListener(e -> {
-                caretaker.salvaStato();
                 Libreria.getInstance().eseguiStrategy(new OrdinaPerStelleDecrescente());
                 aggiornaTabella(Libreria.getInstance().getListaLibri());
-                btnUndo.setEnabled(caretaker.canUndo());
-                btnRedo.setEnabled(caretaker.canRedo());
+
             });
 
             ordinaStelleCrescente.addActionListener(e -> {
-                caretaker.salvaStato();
                 Libreria.getInstance().eseguiStrategy(new OrdinaPerStelleCrescente());
                 aggiornaTabella(Libreria.getInstance().getListaLibri());
-                btnUndo.setEnabled(caretaker.canUndo());
-                btnRedo.setEnabled(caretaker.canRedo());
+
             });
             ordinaStato.addActionListener(e -> {
-                caretaker.salvaStato();
                 Libreria.getInstance().eseguiStrategy(new OrdinaPerStatoLettura());
                 aggiornaTabella(Libreria.getInstance().getListaLibri());
-                btnUndo.setEnabled(caretaker.canUndo());
-                btnRedo.setEnabled(caretaker.canRedo());
             });
 
             ordinaLingua.addActionListener(e -> {
-                caretaker.salvaStato();
                 Libreria.getInstance().eseguiStrategy(new OrdinaPerLingua());
                 aggiornaTabella(Libreria.getInstance().getListaLibri());
-                btnUndo.setEnabled(caretaker.canUndo());
-                btnRedo.setEnabled(caretaker.canRedo());
             });
 
             //BOTTONE FILTRA
