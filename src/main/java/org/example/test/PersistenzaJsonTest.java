@@ -18,8 +18,6 @@ public class PersistenzaJsonTest {
 
     private static final Path TEMP_FILE = Path.of("test_libreria.json");
 
-
-
     @AfterEach
     void eliminaFile() throws Exception {
         Files.delete(TEMP_FILE);

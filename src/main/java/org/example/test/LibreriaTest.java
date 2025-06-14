@@ -66,7 +66,6 @@ public class LibreriaTest {
     }
 
     @Test
-
     void testModificaLibro() {
         Libro libro = creaLibro("5678");
         Libreria.getInstance().aggiungiLibro(libro);

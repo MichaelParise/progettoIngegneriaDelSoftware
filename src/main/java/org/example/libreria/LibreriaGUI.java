@@ -497,7 +497,6 @@ public LibreriaGUI() {
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
                 if (b.isEnabled()) {
-                    // Solo se il bottone è abilitato disegna sfondo
                     if (b.getModel().isPressed()) {
                         g2.setColor(new Color(60, 110, 160));
                     } else {
@@ -513,7 +512,12 @@ public LibreriaGUI() {
                 int x = (r.width - fm.stringWidth(b.getText())) / 2;
                 int y = (r.height - fm.getHeight()) / 2 + fm.getAscent();
 
-                g2.setColor(b.isEnabled() ? b.getForeground() : Color.GRAY); // testo grigio se disabilitato
+                if (b.isEnabled()) {
+                    g2.setColor(b.getForeground());
+                } else {
+                    g2.setColor(Color.GRAY);
+                }
+
                 g2.drawString(b.getText(), x, y);
                 g2.dispose();
             }
@@ -528,7 +532,7 @@ public LibreriaGUI() {
                 );
             }
 
-            public void mouseExited(java.awt.event.MouseEvent evt) {
+            public void mouseExited(MouseEvent evt) {
                 button.setBackground(
                         new Color(30, 60, 90)
                 );

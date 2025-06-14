@@ -43,7 +43,6 @@ public class LibreriaCaretaker {
     }
 
     public boolean canRedo() {
-
         return !redoList.isEmpty();
     }
 

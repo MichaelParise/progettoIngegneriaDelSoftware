@@ -41,8 +41,7 @@ public final class Libreria {
 
 
     public List<Libro> cerca(String parametro) {
-        List<Libro> filtrati = new ArrayList<>();
-
+        List<Libro> cercati = new ArrayList<>();
         for (Libro libro : Libreria.getInstance().getListaLibri()) {
             String param = parametro.toLowerCase();
             if (libro.getTitolo().toLowerCase().contains(param) ||
@@ -51,11 +50,11 @@ public final class Libreria {
                     libro.getCodiceISBN().toLowerCase().contains(param) ||
                     libro.getStatoLettura().toString().toLowerCase().contains(param) ||
                     String.valueOf(libro.getStelle()).equals(param)) {
-                filtrati.add(libro);
+                cercati.add(libro);
             }
         }
 
-        return filtrati;
+        return cercati;
     }
 
 
